@@ -14,7 +14,7 @@ const ProfileCard = ({ profile }) => {
           to={`/profile/${id}`}
           className="text-indigo-600 mt-4 inline-block"
         >
-          View Details
+          Summary
         </Link>
       </div>
     </div>
