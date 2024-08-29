@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { fetchProfiles, updateProfile, addProfile, deleteProfile } from '../api/profileService';
+import { fetchProfiles, updateProfile, addProfile, deleteProfile, reverseGeocode } from '../api/profileService';
 import LoadingIndicator from './LoadingIndicator';
 
 const AdminPanel = () => {
@@ -7,12 +7,26 @@ const AdminPanel = () => {
   const [loading, setLoading] = useState(true);
   const [newProfile, setNewProfile] = useState({ name: '', description: '', location: { latitude: '', longitude: '' } });
   const [editProfile, setEditProfile] = useState(null);
+  const [locationNames, setLocationNames] = useState({});
 
   useEffect(() => {
     const getProfiles = async () => {
       const profileData = await fetchProfiles();
       setProfiles(profileData);
       setLoading(false);
+
+      // Reverse geocode locations for all profiles
+      const locationPromises = profileData.map(profile =>
+        reverseGeocode(profile.location.latitude, profile.location.longitude)
+      );
+      const locations = await Promise.all(locationPromises);
+
+      const locationMapping = profileData.reduce((acc, profile, index) => {
+        acc[profile.id] = locations[index];
+        return acc;
+      }, {});
+
+      setLocationNames(locationMapping);
     };
 
     getProfiles();
@@ -139,7 +153,7 @@ const AdminPanel = () => {
         <div key={profile.id} className="bg-white rounded-lg shadow-md p-4 mb-4">
           <h2 className="text-xl font-semibold">{profile.name}</h2>
           <p>{profile.description}</p>
-          <p>Location: {profile.location.latitude}, {profile.location.longitude}</p>
+          <p>Location: {locationNames[profile.id] || `${profile.location.latitude}, ${profile.location.longitude}`}</p>
           <button onClick={() => setEditProfile(profile)} className="bg-blue-500 text-white px-4 py-2 rounded">Edit</button>
           <button onClick={() => handleDelete(profile.id)} className="bg-red-500 text-white px-4 py-2 rounded ml-2">Delete</button>
         </div>

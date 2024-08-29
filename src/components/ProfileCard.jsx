@@ -16,6 +16,12 @@ const ProfileCard = ({ profile }) => {
         >
           Summary
         </Link>
+        <Link
+          to={`/profile/${id}/details`}
+          className="text-indigo-600 mt-4 inline-block ml-4"
+        >
+          View Details
+        </Link>
       </div>
     </div>
   );

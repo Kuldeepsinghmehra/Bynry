@@ -1,9 +1,29 @@
 // src/components/SearchFilter.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { reverseGeocode } from '../api/profileService'; 
 
 const SearchFilter = ({ profiles, onFilter }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterLocation, setFilterLocation] = useState('');
+  const [locationNames, setLocationNames] = useState({});
+
+  useEffect(() => {
+    const fetchLocations = async () => {
+      const locationPromises = profiles.map(profile =>
+        reverseGeocode(profile.location.latitude, profile.location.longitude)
+      );
+      const locations = await Promise.all(locationPromises);
+
+      const locationMapping = profiles.reduce((acc, profile, index) => {
+        acc[profile.id] = locations[index];
+        return acc;
+      }, {});
+
+      setLocationNames(locationMapping);
+    };
+
+    fetchLocations();
+  }, [profiles]);
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -16,9 +36,9 @@ const SearchFilter = ({ profiles, onFilter }) => {
   };
 
   const filterProfiles = (term, location) => {
-    const filtered = profiles.filter(profile => 
+    const filtered = profiles.filter(profile =>
       profile.name.toLowerCase().includes(term.toLowerCase()) &&
-      (location ? profile.location === location : true)
+      (location ? locationNames[profile.id]?.toLowerCase().includes(location.toLowerCase()) : true)
     );
     onFilter(filtered);
   };
@@ -32,12 +52,13 @@ const SearchFilter = ({ profiles, onFilter }) => {
         onChange={handleSearch}
         className="border p-2 rounded mb-2"
       />
-      <select value={filterLocation} onChange={handleFilterLocation} className="border p-2 rounded">
-        <option value="">All Locations</option>
-        <option value="New York">New York</option>
-        <option value="San Francisco">San Francisco</option>
-        {/* Add more location options as needed */}
-      </select>
+      <input
+        type="text"
+        placeholder="Search by location"
+        value={filterLocation}
+        onChange={handleFilterLocation}
+        className="border p-2 rounded"
+      />
     </div>
   );
 };

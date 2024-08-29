@@ -5,6 +5,7 @@ import ProfileList from './components/ProfileList';
 import ProfileDetails from './components/ProfileDetails';
 import NotFound from './pages/NotFound';
 import AdminPanel from './components/AdminPanel';
+import ProfileDetailsExtended from './components/ProfileDetailsExtended';
 
 const App = () => {
   return (
@@ -12,7 +13,8 @@ const App = () => {
       <Routes>
         <Route path="/" element={<ProfileList />} />
         <Route path="/profile/:id" element={<ProfileDetails />} />
-                  <Route path="/admin" element={<AdminPanel />} />
+        <Route path="/admin" element={<AdminPanel />} />
+        <Route path="/profile/:id/details" element={<ProfileDetailsExtended/>} /> 
 
         <Route path="*" element={<NotFound />} />
       </Routes>

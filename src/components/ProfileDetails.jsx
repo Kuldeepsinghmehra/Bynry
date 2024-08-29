@@ -1,25 +1,47 @@
-// ProfileDetails.jsx
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import MapComponent from './MapComponent';
-import { fetchProfiles } from '../api/profileService'; // Ensure this function can fetch by ID
+import { fetchProfiles, reverseGeocode } from '../api/profileService';
 
 const ProfileDetails = () => {
   const { id } = useParams(); // Get the profile ID from URL
   const [profile, setProfile] = useState(null);
+  const [locationName, setLocationName] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const getProfile = async () => {
-      const profiles = await fetchProfiles();
-      const selectedProfile = profiles.find(profile => profile.id === parseInt(id));
-      setProfile(selectedProfile);
+      try {
+        const profiles = await fetchProfiles();
+        const selectedProfile = profiles.find(profile => profile.id === parseInt(id));
+        if (!selectedProfile) {
+          throw new Error('Profile not found');
+        }
+        setProfile(selectedProfile);
+
+        const location = await reverseGeocode(selectedProfile.location.latitude, selectedProfile.location.longitude);
+        setLocationName(location);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
     };
 
     getProfile();
   }, [id]);
 
-  if (!profile) {
+  if (loading) {
     return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  if (!profile) {
+    return <div>No profile found.</div>;
   }
 
   return (
@@ -37,7 +59,7 @@ const ProfileDetails = () => {
       </div>
 
       <div className="mt-6">
-        <h3 className="text-xl font-semibold text-gray-800">Location</h3>
+        <h3 className="text-xl font-semibold text-gray-800">Location: {locationName || 'Location unavailable'}</h3>
         <MapComponent latitude={profile.location.latitude} longitude={profile.location.longitude} />
       </div>
     </div>
