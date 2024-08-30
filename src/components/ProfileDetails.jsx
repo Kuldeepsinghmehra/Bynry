@@ -4,7 +4,7 @@ import MapComponent from './MapComponent';
 import { fetchProfiles, reverseGeocode } from '../api/profileService';
 
 const ProfileDetails = () => {
-  const { id } = useParams(); // Get the profile ID from URL
+  const { id } = useParams(); 
   const [profile, setProfile] = useState(null);
   const [locationName, setLocationName] = useState('');
   const [loading, setLoading] = useState(true);

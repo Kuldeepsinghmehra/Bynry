@@ -15,7 +15,7 @@ const MapComponent = ({ latitude, longitude }) => {
     L.marker([latitude, longitude]).addTo(map);
 
     return () => {
-      map.remove(); // Cleanup on unmount
+      map.remove();
     };
   }, [latitude, longitude]);
 

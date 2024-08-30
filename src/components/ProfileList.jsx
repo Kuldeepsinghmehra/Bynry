@@ -1,4 +1,4 @@
-// src/components/ProfileList.jsx
+
 import React, { useEffect, useState } from 'react';
 import ProfileCard from './ProfileCard';
 import { fetchProfiles } from '../api/profileService';
@@ -31,7 +31,7 @@ const ProfileList = () => {
 
   return (
     <div className="p-4">
-      <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">Profile Display</h1>
+      <h1 className="text-5xl font-extrabold text-center text-indigo-600 mb-8 animate-bounce ">Profile Display</h1>
       <SearchFilter profiles={profiles} onFilter={handleFilter} />
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {filteredProfiles.map(profile => (

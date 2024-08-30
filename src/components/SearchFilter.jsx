@@ -1,11 +1,12 @@
-// src/components/SearchFilter.jsx
 import React, { useState, useEffect } from 'react';
 import { reverseGeocode } from '../api/profileService'; 
+import { useNavigate } from 'react-router-dom';
 
 const SearchFilter = ({ profiles, onFilter }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterLocation, setFilterLocation] = useState('');
   const [locationNames, setLocationNames] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchLocations = async () => {
@@ -42,9 +43,14 @@ const SearchFilter = ({ profiles, onFilter }) => {
     );
     onFilter(filtered);
   };
+  const handleClick=()=>
+  {
+    navigate('/admin')
+
+  }
 
   return (
-    <div className="p-4">
+    <div className="p-4 flex items-center justify-center" >
       <input
         type="text"
         placeholder="Search by name"
@@ -59,6 +65,7 @@ const SearchFilter = ({ profiles, onFilter }) => {
         onChange={handleFilterLocation}
         className="border p-2 rounded"
       />
+      <button className='border p-2 rounded hover:bg-indigo-600' onClick={handleClick}>Go to Dashboard</button>
     </div>
   );
 };
