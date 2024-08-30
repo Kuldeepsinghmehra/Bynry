@@ -107,7 +107,7 @@ const AdminPanel = () => {
         <button onClick={handleAdd} className="w-full bg-green-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-600 transition">Add Profile</button>
       </div>
 
-      {/* Update Profile Form */}
+      
       {editProfile && (
         <div className="mb-8 p-6 border border-gray-300 rounded-lg shadow-sm bg-white">
           <h2 className="text-3xl font-semibold mb-6">Edit Profile</h2>
@@ -144,7 +144,7 @@ const AdminPanel = () => {
         </div>
       )}
 
-      {/* Profiles List */}
+    
       {profiles.map(profile => (
         <div key={profile.id} className="bg-white rounded-lg shadow-md p-6 mb-6">
           <h2 className="text-2xl font-semibold mb-2">{profile.name}</h2>
