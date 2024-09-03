@@ -65,16 +65,7 @@ const SearchFilter = ({ profiles, onFilter }) => {
         onChange={handleFilterLocation}
         className="border p-2 rounded"
       />
-      <button className=' border 
-    p-2 
-    rounded 
-    hover:bg-indigo-600 
-    sm:p-3 
-    sm:text-lg 
-    md:p-4 
-    md:text-xl 
-    lg:p-5 
-    lg:text-2xl' onClick={handleClick}>Go to Dashboard</button>
+      <button className='border p-2 rounded hover:bg-indigo-600' onClick={handleClick}>Go to Dashboard</button>
     </div>
   );
 };
