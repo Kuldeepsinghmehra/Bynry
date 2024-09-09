@@ -32,7 +32,7 @@ const ProfileDetailsExtended = () => {
         <h1 className="text-4xl font-bold text-gray-900 mb-2">{name}</h1>
         <p className="text-gray-700 mb-4">{description}</p>
         <div className="mb-4">
-          <p className="text-gray-700 mb-2"><strong>Email:</strong> {email}</p>
+          <p className="text-gray-700 mb-2"><strong>Email-ID:</strong> {email}</p>
           <p className="text-gray-700 mb-2"><strong>Phone:</strong> {phone}</p>
           <p className="text-gray-700 mb-2"><strong>Interests:</strong> {interests.join(', ')}</p>
         </div>
